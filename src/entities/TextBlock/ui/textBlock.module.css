@@ -1,0 +1,46 @@
+.textContainer {
+  width: 1000px;
+  height: 300px;
+  margin: 200px auto 0px;
+  font-size: 22px;
+  padding: 4px;
+  position: relative;
+}
+
+.changeWordsBtn {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  width: 100px;
+  height: 27px;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.changeWordsBtn:hover {
+  opacity: 0.7;
+  border: 1px solid gray;
+}
+
+.changeWordsBtn:focus {
+  outline: none;
+}
+
+.currentChar {
+  color: blue;
+  font-weight: bold;
+}
+
+.incorrectChar {
+  color: red;
+}
+
+.correctChar {
+  color: green;
+}
+
+.finishedWord {
+  color: gray;
+}
