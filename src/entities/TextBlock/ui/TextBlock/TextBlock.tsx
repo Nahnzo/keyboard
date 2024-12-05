@@ -1,20 +1,28 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Accuracy } from '../../../../features/Accuracy'
+import { handleKeyPress } from '../../../../shared/utils/utils'
 import styles from './TextBlock.module.css'
+import Words from '../Words/Words'
 const TextBlock = () => {
   const [words, setWords] = useState<string[]>([])
   const [counterCharacters, setCounterCharacters] = useState(0)
   const [counterWords, setCounterWords] = useState(0)
   const [changeWords, setChangeWords] = useState(false)
+  const [counterErrors, setCounterErrors] = useState<number>(0)
   const [isNiceChar, setIsNiceChar] = useState<boolean | null>(null)
+  const [totalPassedChars, setTotalPassedChars] = useState<number>(0)
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!words) return
-
+      if (!handleKeyPress(event)) {
+        return
+      }
       const currentWord = words[counterWords]
       if (currentWord) {
         if (event.key === currentWord[counterCharacters]) {
           setCounterCharacters((prev) => prev + 1)
+          setTotalPassedChars((prev) => prev + 1)
           setIsNiceChar(true)
           if (event.key === ' ') {
             return
@@ -26,6 +34,7 @@ const TextBlock = () => {
           }
         } else {
           setIsNiceChar(false)
+          setCounterErrors((prev) => prev + 1)
         }
 
         if (event.key === ' ' && counterCharacters === currentWord.length) {
@@ -54,47 +63,26 @@ const TextBlock = () => {
     getWords()
   }, [changeWords])
 
-  const renderWords = useCallback(() => {
-    return words.map((word, wordIndex) => {
-      const isWordFinished = counterWords > wordIndex || (counterWords === wordIndex && counterCharacters === word.length)
-      return (
-        <span key={wordIndex} className={isWordFinished ? styles.finishedWord : ''}>
-          {word.split('').map((char, charIndex) => {
-            const isCurrentChar = counterWords === wordIndex && counterCharacters === charIndex
-            const isCorrectChar = counterWords === wordIndex && counterCharacters === charIndex && isNiceChar
-            const isIncorrectChar = counterWords === wordIndex && counterCharacters === charIndex && !isNiceChar
-            return (
-              <span
-                key={charIndex}
-                className={`
-                ${isCurrentChar ? styles.currentChar : ''}
-                ${isCorrectChar ? styles.correctChar : ''}
-                ${isIncorrectChar ? styles.incorrectChar : ''}
-              `}
-              >
-                {char}
-              </span>
-            )
-          })}{' '}
-        </span>
-      )
-    })
-  }, [counterCharacters, counterWords, isNiceChar, words])
-
   return (
-    <div className={styles.textContainer}>
-      {renderWords()}
-      <button
-        onClick={() => {
-          setChangeWords((prev) => !prev)
-          setCounterCharacters(0)
-          setCounterWords(0)
-        }}
-        className={styles.changeWordsBtn}
-      >
-        Refresh
-      </button>
-    </div>
+    <>
+      <div className={styles.accuracyContainer}>
+        <Accuracy errors={counterErrors} totalPassedChars={totalPassedChars} />
+      </div>
+      <div className={styles.textContainer}>
+        <Words words={words} counterCharacters={counterCharacters} counterWords={counterWords} isNiceChar={isNiceChar} />
+        <button
+          onClick={() => {
+            setChangeWords((prev) => !prev)
+            setCounterCharacters(0)
+            setCounterWords(0)
+            setCounterErrors(totalPassedChars)
+          }}
+          className={styles.changeWordsBtn}
+        >
+          Refresh
+        </button>
+      </div>
+    </>
   )
 }
 
