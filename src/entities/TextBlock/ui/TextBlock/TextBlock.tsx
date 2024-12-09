@@ -3,6 +3,9 @@ import { Accuracy } from '../../../../features/Accuracy'
 import { handleKeyPress } from '../../../../shared/utils/utils'
 import styles from './TextBlock.module.css'
 import Words from '../Words/Words'
+import { RootState, useAppDispatch } from '../../../../app/store/store'
+import { handleExpiredTimer, handleTimer } from '../../../Timer/model/timerSlice'
+import { useSelector } from 'react-redux'
 const TextBlock = () => {
   const [words, setWords] = useState<string[]>([])
   const [counterCharacters, setCounterCharacters] = useState(0)
@@ -11,7 +14,13 @@ const TextBlock = () => {
   const [counterErrors, setCounterErrors] = useState<number>(0)
   const [isNiceChar, setIsNiceChar] = useState<boolean | null>(null)
   const [totalPassedChars, setTotalPassedChars] = useState<number>(0)
-
+  const dispatch = useAppDispatch()
+  const hasExpiredTimer = useSelector((state: RootState) => state.timer.hasExpired)
+  useEffect(() => {
+    if (hasExpiredTimer) {
+      location.reload()
+    }
+  }, [hasExpiredTimer])
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!words) return
@@ -20,6 +29,7 @@ const TextBlock = () => {
       }
       const currentWord = words[counterWords]
       if (currentWord) {
+        dispatch(handleTimer(true))
         if (event.key === currentWord[counterCharacters]) {
           setCounterCharacters((prev) => prev + 1)
           setTotalPassedChars((prev) => prev + 1)
@@ -48,7 +58,7 @@ const TextBlock = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown)
     }
-  }, [counterCharacters, counterWords, words])
+  }, [counterCharacters, counterWords, dispatch, words])
 
   useEffect(() => {
     const getWords = async () => {
@@ -65,9 +75,7 @@ const TextBlock = () => {
 
   return (
     <>
-      <div className={styles.accuracyContainer}>
-        <Accuracy errors={counterErrors} totalPassedChars={totalPassedChars} />
-      </div>
+      <div className={styles.accuracyContainer}>{/* <Accuracy errors={counterErrors} totalPassedChars={totalPassedChars} /> */}</div>
       <div className={styles.textContainer}>
         <Words words={words} counterCharacters={counterCharacters} counterWords={counterWords} isNiceChar={isNiceChar} />
         <button
@@ -76,6 +84,7 @@ const TextBlock = () => {
             setCounterCharacters(0)
             setCounterWords(0)
             setCounterErrors(totalPassedChars)
+            dispatch(handleExpiredTimer(true))
           }}
           className={styles.changeWordsBtn}
         >
