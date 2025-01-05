@@ -1,0 +1,16 @@
+.resultContainer {
+  width: 1200px;
+  height: 790px;
+  margin: 50px auto;
+}
+
+a {
+  color: rgb(177, 175, 175);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  outline: none;
+}

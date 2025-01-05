@@ -1,0 +1,12 @@
+.inputsContainer {
+  width: 480px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 3px solid rgb(212, 243, 243);
+  border-radius: 10px;
+  margin: 200px auto;
+  gap: 1px;
+}

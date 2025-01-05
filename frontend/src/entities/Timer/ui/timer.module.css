@@ -1,0 +1,31 @@
+.timerContainer {
+  display: flex;
+  justify-content: center;
+  font-size: 32px;
+  color: aliceblue;
+}
+
+.secondsContainer {
+  margin-left: 15px;
+}
+
+.timeBtn {
+  width: 50px;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 5px 0 0px;
+  border-radius: 5px;
+  border: none;
+  font-size: 22px;
+}
+
+.currentTime {
+  width: 50px;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 5px 0 0px;
+  border-radius: 5px;
+  border: none;
+  color: aliceblue;
+  font-size: 22px;
+}
