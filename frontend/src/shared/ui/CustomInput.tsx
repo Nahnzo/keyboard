@@ -1,5 +1,5 @@
 import { ChangeEvent } from 'react'
-import styles from './customInput.module.css'
+import styles from './index.module.css'
 
 interface IInputProps {
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void

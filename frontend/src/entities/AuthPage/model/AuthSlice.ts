@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { loginUserThunk, logoutUserThunk } from '../../../shared/api/authService'
+import { checkSessionThunk, loginUserThunk, logoutUserThunk } from '../../../shared/api/authService'
 
 interface IUserState {
   isAuth: boolean
@@ -27,20 +27,30 @@ const userSlice = createSlice({
     })
 
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
-      state.isAuth = true
+      if (action.payload.isAuth) {
+        state.isAuth = true
+        state.username = action.payload.username
+      } else {
+        state.isAuth = false
+        state.errorMessage = 'Неверный логин или пароль'
+      }
       state.isLoading = false
-      state.username = action.meta.arg.username
     })
-
     builder.addCase(loginUserThunk.rejected, (state, action) => {
       state.hasError = true
       state.isAuth = false
       state.isLoading = false
-      state.errorMessage = action?.error?.message
+      state.errorMessage = 'Неверный логин или пароль'
     })
     builder.addCase(logoutUserThunk.fulfilled, (state) => {
       state.isAuth = false
       state.username = undefined
+    })
+    builder.addCase(checkSessionThunk.fulfilled, (state, action) => {
+      if (action.payload.isAuth) {
+        state.isAuth = true
+        state.username = action.payload.username
+      }
     })
   },
 })

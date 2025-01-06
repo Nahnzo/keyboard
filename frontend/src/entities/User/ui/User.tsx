@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { RootState, useAppDispatch } from '../../../app/store/store'
 import styles from './user.module.css'
 import { logoutUserThunk } from '../../../shared/api/authService'
+import CustomButton from '../../../shared/ui/CustomButton'
 
 const User = () => {
   const navigate = useNavigate()
@@ -18,7 +19,9 @@ const User = () => {
   return (
     <div className={styles.container}>
       <p>{username}</p>
-      <button onClick={handleAuthUser}>{isAuth ? 'Выйти' : 'Войти'}</button>
+      <CustomButton width={60} height={25} handler={handleAuthUser} margin={10}>
+        {isAuth ? 'Выйти' : 'Войти'}
+      </CustomButton>
       <div className={styles.userAvatar}></div>
     </div>
   )

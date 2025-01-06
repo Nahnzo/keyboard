@@ -4,7 +4,6 @@ const User = require('../models/user')
 
 const router = express.Router()
 
-// Регистрация
 router.post('/register', async (req, res) => {
   const { username, password, email } = req.body
 
@@ -24,56 +23,50 @@ router.post('/register', async (req, res) => {
   }
 })
 
-// Логин
 router.post('/login', async (req, res) => {
   const { username, password } = req.body
-
   try {
     const user = await User.findOne({ username })
-    if (!user) return res.status(400).json({ message: 'Пользователь не найден' })
-
+    if (!user) {
+      return res.status(400).json({ message: 'Неверный логин или пароль' })
+    }
     const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) return res.status(400).json({ message: 'Неверный пароль' })
-
-    // Устанавливаем сессию для пользователя
-    req.session.userId = user._id // Сохраняем ID пользователя в сессии
-    req.session.username = user.username // Сохраняем имя пользователя в сессии
-
-    res.json({ message: `Добро пожаловать, ${user.username}` })
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Неверный логин или пароль' })
+    }
+    req.session.userId = user._id
+    req.session.username = user.username
+    res.json({
+      isAuth: true,
+      username: user.username,
+      userId: user._id,
+    })
   } catch (error) {
-    res.status(500).json({ message: 'Ошибка сервера', error })
+    console.error(error)
+    res.status(500).json({ message: 'Ошибка сервера', error: error.message })
   }
 })
 
-// Логаут
 router.post('/logout', (req, res) => {
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({ message: 'Ошибка при завершении сессии' })
     }
 
-    res.clearCookie('connect.sid') // Удаляем cookie сессии
+    res.clearCookie('connect.sid')
     return res.status(200).json({ message: 'Выход выполнен успешно' })
   })
 })
 
-// // Защищённый маршрут, который требует аутентификации
-// router.get('/profile', (req, res) => {
-//   if (!req.session.userId) {
-//     return res.status(401).json({ message: 'Не авторизован' })
-//   }
-
-//   // Получаем пользователя из базы данных по ID из сессии
-//   User.findById(req.session.userId)
-//     .then((user) => {
-//       if (!user) {
-//         return res.status(404).json({ message: 'Пользователь не найден' })
-//       }
-//       res.json({ username: user.username, email: user.email })
-//     })
-//     .catch((error) => {
-//       res.status(500).json({ message: 'Ошибка сервера', error })
-//     })
-// })
+router.get('/me', (req, res) => {
+  if (req.session.userId) {
+    res.json({
+      isAuth: true,
+      username: req.session.username,
+    })
+  } else {
+    res.status(401).json({ isAuth: false, message: 'Сессия истекла' })
+  }
+})
 
 module.exports = router

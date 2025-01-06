@@ -31,6 +31,7 @@ export const loginUserThunk = createAsyncThunk('user/login', async ({ password, 
   try {
     const response = await fetch('http://localhost:3000/auth/login', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -38,13 +39,32 @@ export const loginUserThunk = createAsyncThunk('user/login', async ({ password, 
     })
 
     if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`)
+      throw new Error('Ошибка аутентификации')
+    }
+
+    const data = await response.json()
+    console.log(data)
+    return data
+  } catch (error: any) {
+    return { isAuth: false, errorMessage: error.message }
+  }
+})
+
+export const checkSessionThunk = createAsyncThunk('auth/checkSession', async (_, { rejectWithValue }) => {
+  try {
+    const response = await fetch('http://localhost:3000/auth/me', {
+      method: 'GET',
+      credentials: 'include',
+    })
+
+    if (!response.ok) {
+      throw new Error('Сессия истекла или пользователь не авторизован')
     }
 
     const data = await response.json()
     return data
-  } catch (error) {
-    return error
+  } catch (error: any) {
+    return rejectWithValue(error.message)
   }
 })
 
@@ -52,12 +72,11 @@ export const logoutUserThunk = createAsyncThunk('user/logout', async () => {
   try {
     const response = await fetch('http://localhost:3000/auth/logout', {
       method: 'POST',
-      credentials: 'include', // Важно, если сессии используют cookie
+      credentials: 'include',
     })
 
     if (response.ok) {
       console.log('Выход выполнен успешно')
-      // Очистите состояние клиента, например, сбросьте данные пользователя
     } else {
       console.error('Ошибка при logout')
     }

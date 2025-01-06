@@ -25,7 +25,11 @@ const Timer = () => {
   return (
     <div className={styles.timerContainer}>
       {timeVariation.map((seconds) => (
-        <button onClick={() => setTimeForTimer(seconds)} className={timeForTimer === seconds ? styles.currentTime : styles.timeBtn}>
+        <button
+          key={seconds}
+          onClick={() => setTimeForTimer(seconds)}
+          className={timeForTimer === seconds ? styles.currentTime : styles.timeBtn}
+        >
           {seconds}
         </button>
       ))}
