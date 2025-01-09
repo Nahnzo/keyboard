@@ -1,11 +1,19 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "outDir": "./dist",
+    "baseUrl": "./src",
     "paths": {
-      "*": ["./src/*"]
+      "app/*": ["app/*"],
+      "entities/*": ["entities/*"],
+      "features/*": ["features/*"],
+      "pages/*": ["pages/*"],
+      "shared/*": ["shared/*"]
     },
-    "moduleResolution": "node"
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
+    "allowJs": true
   },
-  "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

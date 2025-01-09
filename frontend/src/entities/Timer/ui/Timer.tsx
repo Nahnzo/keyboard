@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store/store'
-import { useTimer } from '../../../shared/hooks/hooks'
+import { RootState, useAppDispatch } from 'app/store/store'
+import { useTimer } from 'shared/hooks/hooks'
 import { handleExpiredTimer, handleTimer } from '../model/timerSlice'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'

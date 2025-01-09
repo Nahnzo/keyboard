@@ -28,4 +28,4 @@ export const TextBlockSlice = createSlice({
 })
 
 export const { incrementCountPassedWords, incrementCountErrors, refreshAllCounts } = TextBlockSlice.actions
-export const TextBlockReducer = TextBlockSlice.reducer
+export const textBlockReducer = TextBlockSlice.reducer

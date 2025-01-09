@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { ResultPage } from '../../pages/ResultPage'
-import { LoginPage, RegistrationPage } from '../../entities/AuthPage'
+import { ResultPage } from 'pages/ResultPage'
+import { LoginPage, RegistrationPage } from 'entities/AuthPage'
 import App from '../../App'
 
 export const router = createBrowserRouter([

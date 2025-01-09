@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux'
-import { Accuracy } from '../../../features/Accuracy'
-import { RootState, useAppDispatch } from '../../../app/store/store'
+import { Accuracy } from 'features/Accuracy'
+import { RootState, useAppDispatch } from 'app/store/store'
 import { useEffect } from 'react'
-import { refreshAllCounts } from '../../../entities/TextBlock/model/TextBlockSlice'
-import { WPM } from '../../../features/WPM'
+import { refreshAllCounts } from 'entities/TextBlock/model/TextBlockSlice'
+import { WPM } from 'features/WPM'
 import { Link } from 'react-router-dom'
 import styles from './resultPage.module.css'
 

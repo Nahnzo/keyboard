@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "lint-staged": "^15.3.0"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "npm --prefix frontend run lint",
+      "git add"
+    ],
+    "backend/**/*.{js,ts}": [
+      "npm --prefix backend run lint",
+      "git add"
+    ]
+  },
+  "scripts": {
+    "prepare": "git config core.hooksPath .git-hooks || echo 'Not in a git repo'"
+  }
+}

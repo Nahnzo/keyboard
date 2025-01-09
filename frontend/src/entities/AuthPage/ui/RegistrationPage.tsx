@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { CustomInput } from '../../../shared/ui'
-import { registerUser } from '../../../shared/api/authService'
+import { CustomInput } from 'shared/ui'
+import { registerUser } from 'shared/api/authService'
 import { Link } from 'react-router-dom'
-import CustomButton from '../../../shared/ui/CustomButton'
+import CustomButton from 'shared/ui/CustomButton'
 import styles from './authPage.module.css'
 
 const RegistrationPage = () => {

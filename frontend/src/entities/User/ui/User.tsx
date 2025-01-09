@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store/store'
+import { RootState, useAppDispatch } from 'app/store/store'
+import { logoutUserThunk } from 'shared/api/authService'
+import CustomButton from 'shared/ui/CustomButton'
 import styles from './user.module.css'
-import { logoutUserThunk } from '../../../shared/api/authService'
-import CustomButton from '../../../shared/ui/CustomButton'
 
 const User = () => {
   const navigate = useNavigate()

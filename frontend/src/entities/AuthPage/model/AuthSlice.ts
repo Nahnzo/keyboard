@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { checkSessionThunk, loginUserThunk, logoutUserThunk } from '../../../shared/api/authService'
+import { checkSessionThunk, loginUserThunk, logoutUserThunk } from 'shared/api/authService'
 
 interface IUserState {
   isAuth: boolean
@@ -22,7 +22,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(loginUserThunk.pending, (state, action) => {
+    builder.addCase(loginUserThunk.pending, (state) => {
       state.isLoading = true
     })
 
@@ -36,7 +36,7 @@ const userSlice = createSlice({
       }
       state.isLoading = false
     })
-    builder.addCase(loginUserThunk.rejected, (state, action) => {
+    builder.addCase(loginUserThunk.rejected, (state) => {
       state.hasError = true
       state.isAuth = false
       state.isLoading = false

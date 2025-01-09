@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { CustomInput } from '../../../shared/ui'
-import { loginUserThunk } from '../../../shared/api/authService'
+import { CustomInput } from 'shared/ui'
+import { loginUserThunk } from 'shared/api/authService'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from '../../../app/store/store'
+import { RootState, useAppDispatch } from 'app/store/store'
 import { Link, useNavigate } from 'react-router-dom'
+import CustomButton from 'shared/ui/CustomButton'
 import styles from './authPage.module.css'
-import CustomButton from '../../../shared/ui/CustomButton'
 
 const LoginPage = () => {
   const [username, setUserName] = useState<string>('')

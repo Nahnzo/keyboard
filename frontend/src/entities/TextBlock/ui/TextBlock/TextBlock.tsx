@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { handleKeyPress } from '../../../../shared/utils/utils'
-import { useAppDispatch } from '../../../../app/store/store'
+import { handleKeyPress } from 'shared/utils/utils'
+import { useAppDispatch } from 'app/store/store'
 import { handleExpiredTimer, handleTimer } from '../../../Timer/model/timerSlice'
 import { incrementCountPassedWords, incrementCountErrors } from '../../model/TextBlockSlice'
 import styles from './TextBlock.module.css'
