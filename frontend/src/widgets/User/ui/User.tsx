@@ -1,8 +1,8 @@
-import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, RootState } from 'app/store/store'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from 'app/store/store'
+import { useNavigate } from 'react-router-dom'
 import { logoutUserThunk } from 'shared/api/authService'
-import CustomButton from 'shared/ui/CustomButton'
+import { CustomButton } from 'shared/ui'
 import styles from './user.module.css'
 
 const User = () => {
@@ -22,7 +22,7 @@ const User = () => {
       <CustomButton width={60} height={25} handler={handleAuthUser} margin={10}>
         {isAuth ? 'Выйти' : 'Войти'}
       </CustomButton>
-      <div className={styles.userAvatar}></div>
+      <div className={styles.userAvatar} onClick={() => navigate('/results')}></div>
     </div>
   )
 }

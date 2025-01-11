@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
-import { Keyboard } from './entities/Keyboard'
 import { TextBlock } from './entities/TextBlock'
-import Timer from './entities/Timer/ui/Timer'
-import { User } from './entities/User'
-import './index.css'
-import { useAppDispatch } from './app/store/store'
+import { Timer } from 'entities/Timer'
 import { checkSessionThunk } from './shared/api/authService'
+import { useAppDispatch } from './app/store/store'
+import { User } from 'widgets/User'
+import './index.css'
 
 function App() {
   const dispatch = useAppDispatch()
@@ -17,7 +16,6 @@ function App() {
       <User />
       <Timer />
       <TextBlock />
-      {/* <Keyboard /> */}
     </main>
   )
 }

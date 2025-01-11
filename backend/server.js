@@ -35,7 +35,9 @@ app.get('/', (_, res) => {
 })
 
 const authRouter = require('./routes/auth')
+const saveDataRouter = require('./routes/resultsCard')
 app.use('/auth', authRouter)
+app.use('/user', saveDataRouter)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => console.log(`Сервер запущен на http://localhost:${PORT}`))

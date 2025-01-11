@@ -3,8 +3,10 @@ import { handleKeyPress } from 'shared/utils/utils'
 import { useAppDispatch } from 'app/store/store'
 import { handleExpiredTimer, handleTimer } from '../../../Timer/model/timerSlice'
 import { incrementCountPassedWords, incrementCountErrors } from '../../model/TextBlockSlice'
+
 import styles from './TextBlock.module.css'
 import Words from '../Words/Words'
+
 const TextBlock = () => {
   const [words, setWords] = useState<string[]>([])
   const [counterCharacters, setCounterCharacters] = useState(0)

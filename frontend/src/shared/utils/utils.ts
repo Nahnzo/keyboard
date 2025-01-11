@@ -11,3 +11,14 @@ export function handleKeyPress(event: KeyboardEvent) {
     return false
   }
 }
+
+export function calculateAccuracy(countErrors: number, totalPassedChars: number) {
+  const accuracy = ((totalPassedChars - countErrors) / totalPassedChars) * 100
+  return accuracy ? accuracy.toFixed(2) : '-' + '%'
+}
+
+export function calculateMinutes(totalPassedChars: number, wordsLength: number = 5) {
+  const wpm = totalPassedChars / wordsLength
+  const cpm = totalPassedChars / (15 / 60)
+  return { wpm, cpm }
+}
