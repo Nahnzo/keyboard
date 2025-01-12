@@ -3,3 +3,24 @@
   height: fit-content;
   min-height: 500px;
 }
+
+.filterContainer {
+  display: flex;
+}
+
+.accuracy {
+  margin-right: 110px;
+}
+
+.time {
+  width: 100px;
+  margin-right: 90px;
+}
+
+.wpm {
+  margin-right: 80px;
+}
+
+.cpm {
+  margin-right: 150px;
+}

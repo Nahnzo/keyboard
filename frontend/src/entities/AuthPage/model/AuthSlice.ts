@@ -30,7 +30,6 @@ const userSlice = createSlice({
 
     builder.addCase(loginUserThunk.fulfilled, (state, action) => {
       if (action.payload.isAuth) {
-        console.log(action.payload)
         state.isAuth = true
         state.username = action.payload.username
         state.userId = action.payload.userId

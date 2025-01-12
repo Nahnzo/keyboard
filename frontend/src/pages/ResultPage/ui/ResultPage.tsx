@@ -1,16 +1,19 @@
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from 'app/store/store'
 import { useEffect } from 'react'
 import { refreshAllCounts } from 'entities/TextBlock/model/TextBlockSlice'
 import { Link } from 'react-router-dom'
 import { User } from 'widgets/User'
 import { ResultListCard } from 'widgets/ResultCard'
+import { checkSessionThunk } from 'shared/api/authService'
+import { useAppDispatch } from 'shared/types/types'
+import { isAuthUserSelector } from '../model/selectors'
 import styles from './resultPage.module.css'
 
 const ResultPage = () => {
-  const { isAuth, username } = useSelector((state: RootState) => state.userReducer)
+  const isAuthUser = useSelector(isAuthUserSelector)
   const dispatch = useAppDispatch()
   useEffect(() => {
+    dispatch(checkSessionThunk())
     return () => {
       dispatch(refreshAllCounts())
     }
@@ -19,12 +22,11 @@ const ResultPage = () => {
     <>
       <User />
       <div className={styles.resultContainer}>
-        {!isAuth && (
+        {!isAuthUser && (
           <h3>
             Для сохранения статистики <Link to="/login">войдите </Link> в аккаунт или <Link to="/registration">зарегистрируйтесь</Link>
           </h3>
         )}
-        {isAuth && <p>{username}, ваш результат</p>}
         <ResultListCard />
       </div>
     </>

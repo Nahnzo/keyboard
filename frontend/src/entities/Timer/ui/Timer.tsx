@@ -1,31 +1,32 @@
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from 'app/store/store'
-import { useTimer } from 'shared/hooks/hooks'
+import { useTimer } from 'shared/hooks/useTimerHook'
 import { handleExpiredTimer, handleTimer } from '../model/timerSlice'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { saveUserResults } from 'shared/api/resultsCardService'
 import { calculateAccuracy, calculateMinutes } from 'shared/utils/utils'
+import { useAppDispatch } from 'shared/types/types'
+import { counterErrorsSelector, isActiveTimerSelector, totalPassedCharsSelector } from '../model/selectors'
 import styles from './timer.module.css'
 
 const timeVariation = ['15', '30', '45', '60']
 
 const Timer = () => {
   const [timeForTimer, setTimeForTimer] = useState<string>('15')
-  const totalPassedChars = useSelector((state: RootState) => state.textBlock.countCountPassedWords)
-  const counterErrors = useSelector((state: RootState) => state.textBlock.countErrors)
-  const { isActive } = useSelector((state: RootState) => state.timer)
+  const totalPassedChars = useSelector(totalPassedCharsSelector)
+  const counterErrors = useSelector(counterErrorsSelector)
+  const isActive = useSelector(isActiveTimerSelector)
   const { seconds, hasExpired } = useTimer(timeForTimer, isActive)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const accuracy = calculateAccuracy(counterErrors, totalPassedChars)
-  const wpm = calculateMinutes(totalPassedChars).wpm
-  const cpm = calculateMinutes(totalPassedChars).cpm
+  const wpm = String(calculateMinutes(totalPassedChars).wpm)
+  const cpm = String(calculateMinutes(totalPassedChars).cpm)
   useEffect(() => {
     if (hasExpired) {
       dispatch(handleExpiredTimer(true))
       dispatch(handleTimer(false))
-      saveUserResults({ seconds: timeForTimer, accuracy, wpm, cpm, created_At: new Date() })
+      saveUserResults({ seconds: timeForTimer, accuracy, wpm, cpm })
       navigate('/results')
     }
   }, [hasExpired, dispatch, navigate, timeForTimer, accuracy, wpm, cpm])

@@ -1,4 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { api } from './axiosInstance'
 
 type UserCredentials = {
   email?: string
@@ -8,79 +9,40 @@ type UserCredentials = {
 
 export const registerUser = async ({ email, password, username }: UserCredentials) => {
   try {
-    const response = await fetch('http://localhost:3000/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, username }),
-    })
-
-    if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`)
-    }
-
-    const data = await response.json()
-    console.log('Регистрация успешна:', data)
+    const response = await api.post('/auth/register', { email, password, username })
+    return response.data
   } catch (error) {
-    console.error('Ошибка при регистрации:', error)
+    throw new Error(error.response?.data || 'Не удалось зарегистрироваться')
   }
 }
 
-export const loginUserThunk = createAsyncThunk('user/login', async ({ password, username }: UserCredentials) => {
+export const loginUserThunk = createAsyncThunk('user/login', async ({ password, username }: UserCredentials, { rejectWithValue }) => {
   try {
-    const response = await fetch('http://localhost:3000/auth/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ password, username }),
-    })
+    const response = await api.post('/auth/login', { password, username })
+    return response.data
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Ошибка аутентификации')
+  }
+})
 
-    if (!response.ok) {
-      throw new Error('Ошибка аутентификации')
+export const logoutUserThunk = createAsyncThunk('user/logout', async (_, { rejectWithValue }) => {
+  try {
+    const response = await api.post('/auth/logout')
+    if (response.status === 200) {
+      return response.data
+    } else {
+      return rejectWithValue('Ошибка при logout')
     }
-
-    const data = await response.json()
-    console.log(data)
-    return data
-  } catch (error: any) {
-    return { isAuth: false, errorMessage: error.message }
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Ошибка подключения')
   }
 })
 
 export const checkSessionThunk = createAsyncThunk('auth/checkSession', async (_, { rejectWithValue }) => {
   try {
-    const response = await fetch('http://localhost:3000/auth/me', {
-      method: 'GET',
-      credentials: 'include',
-    })
-
-    if (!response.ok) {
-      throw new Error('Сессия истекла или пользователь не авторизован')
-    }
-
-    const data = await response.json()
-    return data
-  } catch (error: any) {
-    return rejectWithValue(error.message)
-  }
-})
-
-export const logoutUserThunk = createAsyncThunk('user/logout', async () => {
-  try {
-    const response = await fetch('http://localhost:3000/auth/logout', {
-      method: 'POST',
-      credentials: 'include',
-    })
-
-    if (response.ok) {
-      console.log('Выход выполнен успешно')
-    } else {
-      console.error('Ошибка при logout')
-    }
+    const response = await api.get('/auth/me')
+    return response.data
   } catch (error) {
-    console.error('Ошибка при подключении к серверу:', error)
+    return rejectWithValue(error.response?.data || 'Сессия истекла или пользователь не авторизован')
   }
 })

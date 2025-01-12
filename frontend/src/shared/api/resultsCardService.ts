@@ -1,46 +1,28 @@
+import { api } from './axiosInstance'
+
 interface IResultCardProps {
-  seconds: string
   accuracy: string
-  wpm: number
-  cpm: number
-  created_At: Date
+  cpm: string
+  seconds: string
+  wpm: string
 }
 
-export const saveUserResults = async ({ seconds, accuracy, wpm, cpm, created_At }: IResultCardProps) => {
+export const saveUserResults = async (data: IResultCardProps) => {
   try {
-    const response = await fetch('http://localhost:3000/user/saveResultsCard', {
-      method: 'POST',
-      credentials: 'include',
-      body: JSON.stringify({ seconds, accuracy, wpm, cpm, created_At }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`)
-    }
-    const res = await response.json()
-    console.log(res)
+    const response = await api.post('/user/saveResultsCard', data)
+    return response.data
   } catch (error) {
-    console.log('Произошла ошибка', error?.message)
+    console.log(error)
+    throw new Error('Не удалось сохранить результаты')
   }
 }
 
-export const getCardListResults = async () => {
+export const getCardListResults = async (): Promise<IResultCardProps[]> => {
   try {
-    const response = await fetch('http://localhost:3000/user/loadResultsCard', {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    if (!response.ok) {
-      throw new Error(`Ошибка: ${response.status}`)
-    }
-    const result = await response.json()
-    return result
+    const response = await api.get('/user/loadResultsCard')
+    return response.data
   } catch (error) {
-    console.log('Произошла ошибка', error?.message)
+    console.error('Ошибка получения списка результатов:', error)
+    return []
   }
 }

@@ -22,3 +22,16 @@ export function calculateMinutes(totalPassedChars: number, wordsLength: number =
   const cpm = totalPassedChars / (15 / 60)
   return { wpm, cpm }
 }
+
+export function formatDate(date: string) {
+  const newDate = new Date(date)
+  const formattedDate = newDate.toLocaleDateString('ru-RU', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+  })
+  return formattedDate
+}

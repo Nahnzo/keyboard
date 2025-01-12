@@ -2,15 +2,17 @@ import { useEffect, useState } from 'react'
 import { CustomInput } from 'shared/ui'
 import { loginUserThunk } from 'shared/api/authService'
 import { useSelector } from 'react-redux'
-import { RootState, useAppDispatch } from 'app/store/store'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAppDispatch } from 'shared/types/types'
+import { errorMessageSelector, isAuthUserSelector } from '../model/selectors'
 import CustomButton from 'shared/ui/CustomButton'
 import styles from './authPage.module.css'
 
 const LoginPage = () => {
   const [username, setUserName] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  const { isAuth, errorMessage } = useSelector((state: RootState) => state.userReducer)
+  const isAuthUser = useSelector(isAuthUserSelector)
+  const errorMessage = useSelector(errorMessageSelector)
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
@@ -19,10 +21,10 @@ const LoginPage = () => {
   }
 
   useEffect(() => {
-    if (isAuth) {
+    if (isAuthUser) {
       navigate('/')
     }
-  }, [isAuth, navigate])
+  }, [isAuthUser, navigate])
 
   return (
     <div className={styles.inputsContainer}>

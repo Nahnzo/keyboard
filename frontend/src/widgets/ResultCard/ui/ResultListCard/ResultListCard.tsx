@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { getCardListResults } from 'shared/api/resultsCardService'
-import { ICardProps } from 'widgets/ResultCard/model/types'
+import { ICardProps } from '../../model/types'
 import CardResult from '../CardResult/CardResult'
 import styles from './resultListCard.module.css'
 const ResultListCard = () => {
   const [resultsList, setResultList] = useState<ICardProps[]>([])
   const [isLoading, setIsLoading] = useState(false)
-
   useEffect(() => {
     const getResultsList = async () => {
       try {
@@ -24,7 +23,7 @@ const ResultListCard = () => {
       }
     }
     getResultsList()
-  }, [])
+  }, [resultsList.length])
 
   if (isLoading) {
     return <div>Загрузка данных...</div>
@@ -32,11 +31,14 @@ const ResultListCard = () => {
 
   return (
     <div className={styles.listCardsContainer}>
-      {resultsList.length > 0 ? (
-        resultsList.map((item) => <CardResult {...item} key={item.userId} />)
-      ) : (
-        <div>Нет данных для отображения</div>
-      )}
+      <div className={styles.filterContainer}>
+        <div className={styles.time}>Время</div>
+        <div className={styles.accuracy}>Точность %</div>
+        <div className={styles.wpm}>Слов в минуту</div>
+        <div className={styles.cpm}>Символов в минуту</div>
+        <div className={styles.date}>Дата создания</div>
+      </div>
+      {resultsList.length > 0 ? resultsList.map((item) => <CardResult {...item} key={item._id} />) : <div>Нет данных для отображения</div>}
     </div>
   )
 }

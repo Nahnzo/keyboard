@@ -7,13 +7,13 @@ router.post('/saveResultsCard', async (req, res) => {
   if (!req.session.userId) {
     return res.status(401).json({ message: 'Пользователь не авторизован' })
   }
-  const { seconds, accuracy, wordsPerMinute, charactersPerMinute, created_At } = req.body
+  const { seconds, accuracy, wpm, cpm, created_At } = req.body
   try {
     const resultsCard = new ResultCard({
       seconds,
       accuracy,
-      wordsPerMinute,
-      charactersPerMinute,
+      wpm,
+      cpm,
       created_At,
       userId: req.session.userId,
     })
